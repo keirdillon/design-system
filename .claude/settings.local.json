@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/keirdillon/Projects/design-system remote -v)",
+      "Bash(git -C /Users/keirdillon/Projects/design-system branch -a)",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(GIT_CURL_VERBOSE=1 git push -u origin main)",
+      "Bash(git --version)",
+      "Bash(brew list:*)",
+      "Read(//usr/local/Cellar/**)",
+      "Bash(/usr/bin/git --version)",
+      "Bash(/usr/bin/git push:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git fsck:*)",
+      "Bash(git remote:*)",
+      "Bash(git config:*)"
+    ]
+  }
+}
