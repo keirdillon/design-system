@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart System Design Toolkit — Coastal Wealth</title>
+<link rel="stylesheet" href="https://use.typekit.net/tpw8nnl.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coastal-900: #252f4a;
+  --coastal-800: #3c506f;
+  --coastal-700: #5d7fa0;
+  --coastal-600: #6b95ba;
+  --coastal-500: #6b95ba;
+  --coastal-400: #89adc8;
+  --coastal-300: #a7c4d8;
+  --coastal-200: #c9dce8;
+  --coastal-100: #e8f0f5;
+  --coastal-50:  #f4f8fb;
+  --sand-50:  #fdfcfa;
+  --sand-100: #faf7f2;
+  --sand-200: #f3ede4;
+  --sand-300: #e5ddd0;
+  --sand-400: #d1c5b4;
+  --sand-500: #b5a895;
+  --white: #ffffff;
+  --gray-50:  #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e8e8e8;
+  --gray-300: #d4d4d4;
+  --gray-400: #a3a3a3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --success: #22c55e;
+  --font-display: 'marlide-display-variable', 'Playfair Display', Georgia, serif;
+  --font-body-serif: 'Source Serif 4', Georgia, serif;
+  --font-ui: 'DM Sans', -apple-system, sans-serif;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 128px;
+  --shadow-sm: 0 1px 3px rgba(37,47,74,0.04);
+  --shadow-md: 0 4px 16px rgba(37,47,74,0.06);
+  --shadow-lg: 0 12px 40px rgba(37,47,74,0.08);
+  --shadow-xl: 0 24px 64px rgba(37,47,74,0.12);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-ui);
+  background: var(--white);
+  color: var(--coastal-900);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   SCROLL REVEAL ANIMATIONS
+   ══════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ══════════════════════════════════════
+   NAVIGATION
+   ══════════════════════════════════════ */
+.nav-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s var(--ease-out);
+}
+.nav-bar.scrolled {
+  background: rgba(37,47,74,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo { font-family: var(--font-display); font-size: 22px; color: var(--white); font-weight: 400; }
+.nav-links { display: flex; gap: var(--space-5); list-style: none; }
+.nav-links a {
+  font-family: var(--font-ui); font-size: 13px; color: rgba(255,255,255,0.5);
+  text-decoration: none; font-weight: 400; transition: color var(--duration-fast);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a.active { color: var(--white); }
+.nav-cta {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+  padding: 8px 20px; background: var(--coastal-600); color: var(--white);
+  border: none; cursor: pointer; text-decoration: none;
+  transition: background var(--duration-fast);
+}
+.nav-cta:hover { background: var(--coastal-400); }
+
+/* ══════════════════════════════════════
+   HERO
+   ══════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  background: var(--coastal-900);
+  padding: var(--space-8);
+  padding-top: 140px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, var(--coastal-600) 0%, var(--coastal-800) 35%, var(--coastal-900) 70%);
+  opacity: 0.9;
+}
+.hero::after {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 60%; height: 100%;
+  background: radial-gradient(ellipse at 70% 30%, rgba(107,149,186,0.15) 0%, transparent 60%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-family: var(--font-ui); font-size: 10px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  font-weight: 500; color: var(--coastal-400);
+  margin-bottom: var(--space-7);
+  opacity: 0; animation: heroFade 0.8s var(--ease-out) 0.2s forwards;
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--coastal-600);
+  animation: pulse-dot 2s ease infinite;
+}
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes heroFade { to { opacity: 1; } }
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero .subtitle-top {
+  font-family: var(--font-body-serif); font-size: 20px;
+  color: rgba(255,255,255,0.4); font-weight: 300; font-style: italic;
+  margin-bottom: var(--space-4);
+  opacity: 0; animation: heroSlideUp 0.8s var(--ease-out) 0.35s forwards;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 7vw, 100px);
+  color: var(--white); line-height: 0.9;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-5);
+  font-weight: 400; max-width: 800px;
+  opacity: 0; animation: heroSlideUp 0.9s var(--ease-out) 0.5s forwards;
+}
+.hero h1 em { font-style: italic; color: var(--coastal-400); }
+.hero-body {
+  font-family: var(--font-body-serif); font-size: 17px;
+  color: rgba(255,255,255,0.4); max-width: 520px;
+  line-height: 1.7; font-weight: 300;
+  margin-bottom: var(--space-7);
+  opacity: 0; animation: heroSlideUp 0.8s var(--ease-out) 0.7s forwards;
+}
+.hero-actions {
+  opacity: 0; animation: heroSlideUp 0.8s var(--ease-out) 0.85s forwards;
+}
+.btn-row { display: flex; gap: var(--space-3); flex-wrap: wrap; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-ui); font-weight: 500; border: none;
+  cursor: pointer; transition: all var(--duration-fast) var(--ease-out);
+  text-decoration: none; font-size: 14px; padding: 14px 32px;
+}
+.btn-accent { background: var(--coastal-600); color: var(--white); }
+.btn-accent:hover { background: var(--coastal-400); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-white-outline { background: transparent; color: var(--white); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); }
+.btn-white-outline:hover { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5); }
+.btn-primary { background: var(--coastal-900); color: var(--white); }
+.btn-primary:hover { background: var(--coastal-800); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-outline { background: transparent; color: var(--coastal-900); box-shadow: inset 0 0 0 1.5px var(--gray-300); }
+.btn-outline:hover { box-shadow: inset 0 0 0 1.5px var(--coastal-600); color: var(--coastal-600); }
+.btn-sand { background: var(--sand-200); color: var(--coastal-900); }
+.btn-sand:hover { background: var(--sand-300); }
+.btn-ghost { background: none; color: var(--coastal-600); padding: 14px 16px; }
+.btn-ghost::after { content: ' →'; transition: transform 200ms var(--ease-out); display: inline-block; }
+.btn-ghost:hover::after { transform: translateX(5px); }
+.btn-sm { font-size: 13px; padding: 10px 24px; }
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: heroFade 1s var(--ease-out) 1.5s forwards;
+}
+.hero-scroll-hint span {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ══════════════════════════════════════
+   SECTIONS
+   ══════════════════════════════════════ */
+.ds-section {
+  padding: var(--space-9) var(--space-8);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.ds-section-title {
+  font-family: var(--font-ui); font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gray-400); font-weight: 500;
+  margin-bottom: var(--space-7);
+  display: flex; align-items: center; gap: 16px;
+}
+.ds-section-title::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+.overline {
+  font-family: var(--font-ui); font-size: 11px;
+  letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 500; color: var(--coastal-600);
+  margin-bottom: var(--space-5);
+  display: inline-flex; align-items: center; gap: 12px;
+}
+.overline::before { content: ''; width: 24px; height: 1.5px; background: var(--coastal-600); }
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.5vw, 52px);
+  line-height: 1.06; letter-spacing: -0.015em;
+  color: var(--coastal-900); margin-bottom: var(--space-4); font-weight: 400;
+}
+.section-heading em { font-style: italic; color: var(--coastal-700); }
+.section-lead {
+  font-family: var(--font-body-serif); font-size: 17px;
+  color: var(--gray-500); max-width: 560px;
+  line-height: 1.7; font-weight: 300; margin-bottom: var(--space-7);
+}
+
+/* ══════════════════════════════════════
+   HOW IT WORKS — Horizontal Steps
+   ══════════════════════════════════════ */
+.how-it-works {
+  background: var(--coastal-900);
+  padding: var(--space-9) var(--space-8);
+  position: relative;
+  overflow: hidden;
+}
+.how-it-works::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--coastal-800) 0%, var(--coastal-900) 50%);
+}
+.how-it-works > * { position: relative; z-index: 1; }
+.how-inner { max-width: 1200px; margin: 0 auto; }
+.steps-track {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: var(--space-7);
+  position: relative;
+}
+.steps-track::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.step-item {
+  text-align: center;
+  padding: 0 var(--space-5);
+  position: relative;
+}
+.step-number {
+  width: 56px; height: 56px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto var(--space-5);
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--coastal-400);
+  font-weight: 400;
+  background: var(--coastal-900);
+  position: relative;
+  z-index: 1;
+  transition: all 0.4s var(--ease-out);
+}
+.step-item:hover .step-number {
+  border-color: var(--coastal-600);
+  color: var(--white);
+  background: var(--coastal-800);
+}
+.step-item h4 {
+  font-family: var(--font-ui); font-size: 15px;
+  font-weight: 500; color: var(--white);
+  margin-bottom: var(--space-2);
+}
+.step-item p {
+  font-family: var(--font-ui); font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.6; max-width: 220px; margin: 0 auto;
+}
+
+/* ══════════════════════════════════════
+   TEMPLATE CARDS
+   ══════════════════════════════════════ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.card {
+  padding: var(--space-7);
+  border: 1px solid var(--gray-200);
+  margin: -0.5px;
+  transition: all 300ms var(--ease-out);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--coastal-600), var(--coastal-400));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 300ms var(--ease-out);
+}
+.card:hover { background: var(--coastal-50); z-index: 1; }
+.card:hover::after { transform: scaleX(1); }
+.card-type-tag {
+  font-family: var(--font-ui); font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 500; color: var(--coastal-600);
+  padding: 4px 12px; background: var(--coastal-100);
+  border: 1px solid var(--coastal-200);
+  display: inline-block; margin-bottom: var(--space-4);
+  align-self: flex-start;
+}
+.card h3 {
+  font-family: var(--font-ui); font-size: 18px;
+  font-weight: 500; color: var(--coastal-900);
+  margin-bottom: var(--space-2);
+}
+.card-meta-row {
+  display: flex; gap: var(--space-4);
+  font-family: var(--font-ui); font-size: 12px;
+  color: var(--gray-400); margin-bottom: var(--space-4);
+}
+.card p {
+  font-family: var(--font-body-serif); font-size: 15px;
+  color: var(--gray-500); line-height: 1.65;
+  font-weight: 300; margin-bottom: var(--space-5);
+  flex: 1;
+}
+.card-actions { display: flex; gap: var(--space-2); }
+
+/* Download success state */
+.btn-downloaded {
+  background: var(--success) !important;
+  color: var(--white) !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════
+   PROMPT LIBRARY
+   ══════════════════════════════════════ */
+.prompt-section {
+  padding: var(--space-9) var(--space-8);
+  background: var(--sand-100);
+  border-top: 1px solid var(--sand-200);
+  border-bottom: 1px solid var(--sand-200);
+}
+.prompt-section-inner { max-width: 1200px; margin: 0 auto; }
+.prompts-list { display: flex; flex-direction: column; gap: 0; }
+.prompt-item {
+  border: 1px solid var(--gray-200);
+  margin: -0.5px;
+  background: var(--white);
+  transition: all 200ms var(--ease-out);
+}
+.prompt-item:hover { border-color: var(--coastal-200); }
+.prompt-header {
+  padding: var(--space-5) var(--space-6);
+  display: flex; align-items: center;
+  justify-content: space-between;
+  cursor: pointer; user-select: none;
+}
+.prompt-header-left { display: flex; align-items: center; gap: var(--space-4); }
+.prompt-icon {
+  width: 40px; height: 40px;
+  display: flex; align-items: center;
+  justify-content: center; font-size: 18px;
+  flex-shrink: 0;
+  background: var(--coastal-50);
+  border: 1px solid var(--coastal-100);
+}
+.prompt-title {
+  font-family: var(--font-ui); font-size: 16px;
+  font-weight: 500; color: var(--coastal-900);
+}
+.prompt-subtitle {
+  font-family: var(--font-ui); font-size: 13px;
+  color: var(--gray-400); margin-top: 2px;
+}
+.prompt-tag-row {
+  display: flex; gap: 6px; margin-top: 6px;
+}
+.prompt-tag {
+  font-family: var(--font-ui); font-size: 10px;
+  padding: 2px 8px; letter-spacing: 0.5px;
+  background: var(--coastal-100);
+  color: var(--coastal-700);
+  font-weight: 500;
+}
+.prompt-toggle {
+  width: 32px; height: 32px;
+  border: 1px solid var(--gray-200);
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast);
+  font-size: 12px; color: var(--gray-400);
+  flex-shrink: 0;
+}
+.prompt-toggle:hover { background: var(--coastal-50); }
+.prompt-item.open .prompt-toggle { transform: rotate(180deg); }
+.prompt-body {
+  display: none;
+  padding: 0 var(--space-6) var(--space-6);
+}
+.prompt-item.open .prompt-body { display: block; }
+.prompt-code {
+  background: var(--coastal-900);
+  padding: var(--space-6);
+  padding-top: var(--space-7);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 12.5px; line-height: 1.75;
+  color: rgba(255,255,255,0.7);
+  white-space: pre-wrap; word-break: break-word;
+  position: relative;
+  max-height: 600px; overflow-y: auto;
+}
+.prompt-code .hl { color: var(--coastal-400); font-weight: 600; }
+.prompt-code .hl-b { color: #7dd3fc; }
+.prompt-code .hl-g { color: #a5d6a7; }
+.prompt-code .hl-d { color: rgba(255,255,255,0.25); }
+.prompt-code .hl-w { color: rgba(255,255,255,0.9); }
+
+.prompt-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  padding: 10px var(--space-6);
+  background: rgba(37,47,74,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin: calc(-1 * var(--space-7)) calc(-1 * var(--space-6)) var(--space-5);
+  margin-top: calc(-1 * var(--space-7));
+  width: calc(100% + var(--space-6) * 2);
+}
+.toolbar-btn {
+  padding: 6px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  font-family: var(--font-ui);
+  font-size: 11px; font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  letter-spacing: 0.5px;
+}
+.toolbar-btn:hover {
+  background: rgba(255,255,255,0.12);
+  color: var(--white);
+}
+.toolbar-btn.copied {
+  background: rgba(34,197,94,0.15);
+  border-color: rgba(34,197,94,0.3);
+  color: #86efac;
+}
+.toolbar-btn.downloaded {
+  background: rgba(107,149,186,0.15);
+  border-color: rgba(107,149,186,0.3);
+  color: var(--coastal-300);
+}
+
+.prompt-notes {
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--coastal-50);
+  border: 1px solid var(--coastal-100);
+  font-family: var(--font-ui); font-size: 13px;
+  color: var(--gray-500); line-height: 1.65;
+}
+.prompt-notes strong { color: var(--coastal-900); font-weight: 500; }
+.prompt-notes .tip {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--coastal-100);
+}
+.prompt-notes .tip::before {
+  content: '→';
+  color: var(--coastal-600);
+  font-weight: 500;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ══════════════════════════════════════
+   BEFORE / AFTER — Interactive Slider
+   ══════════════════════════════════════ */
+.ba-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--gray-200);
+  margin-bottom: var(--space-7);
+  position: relative;
+  overflow: hidden;
+}
+.ba-side { display: flex; flex-direction: column; }
+.ba-label {
+  padding: 14px var(--space-6);
+  font-family: var(--font-ui); font-size: 11px;
+  font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.ba-label-before {
+  background: var(--gray-50); color: var(--gray-400);
+  border-bottom: 1px solid var(--gray-200);
+  border-right: 1px solid var(--gray-200);
+}
+.ba-label-after {
+  background: var(--coastal-900); color: var(--coastal-400);
+}
+.ba-preview {
+  flex: 1; min-height: 340px;
+  display: flex; align-items: center;
+  justify-content: center; padding: var(--space-7);
+}
+.ba-preview-before {
+  background: var(--gray-50);
+  border-right: 1px solid var(--gray-200);
+  position: relative;
+}
+.ba-preview-after {
+  background: var(--coastal-900);
+  position: relative; overflow: hidden;
+}
+.ba-preview-after::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--coastal-800), var(--coastal-900));
+}
+.ba-preview-after > * { position: relative; z-index: 1; }
+.ba-caption {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--gray-400);
+  text-align: center;
+  padding: 12px;
+  border-top: 1px solid var(--gray-200);
+  background: var(--gray-50);
+}
+.ba-caption-dark {
+  color: var(--coastal-400);
+  border-top-color: rgba(255,255,255,0.06);
+  background: rgba(37,47,74,0.5);
+}
+
+/* Mocks */
+.mock-doc {
+  width: 160px; height: 210px;
+  background: white; border: 1px solid var(--gray-200);
+  padding: 14px; box-shadow: var(--shadow-sm);
+  transition: transform 0.4s var(--ease-out);
+}
+.ba-showcase:hover .mock-doc { transform: scale(0.95) rotate(-1deg); }
+.mock-doc .md-t { height: 6px; background: var(--coastal-900); width: 60%; margin-bottom: 10px; }
+.mock-doc .md-l { height: 3px; background: var(--gray-200); margin-bottom: 4px; }
+.mock-doc .md-l:nth-child(3) { width: 90%; }
+.mock-doc .md-l:nth-child(4) { width: 75%; }
+.mock-doc .md-l:nth-child(5) { width: 85%; }
+.mock-doc .md-l:nth-child(6) { width: 50%; margin-top: 12px; background: var(--gray-300); height: 4px; }
+.mock-doc .md-l:nth-child(7) { width: 80%; }
+.mock-doc .md-l:nth-child(8) { width: 70%; }
+.mock-doc .md-l:nth-child(9) { width: 88%; }
+
+.mock-slide {
+  width: 260px; height: 160px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 20px; display: flex;
+  flex-direction: column; justify-content: space-between;
+  position: relative;
+  transition: transform 0.4s var(--ease-out);
+}
+.ba-showcase:hover .mock-slide { transform: scale(1.02); }
+.mock-slide::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--coastal-600), var(--coastal-400));
+}
+.mock-slide .ms-bar { height: 4px; background: var(--coastal-400); width: 30px; }
+.mock-slide .ms-title {
+  font-family: var(--font-display); font-size: 15px;
+  color: var(--white); line-height: 1.15; margin-top: 6px;
+}
+.mock-slide .ms-title em { font-style: italic; color: var(--coastal-400); }
+.mock-slide .ms-sub {
+  font-family: var(--font-ui); font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+.mock-slide .ms-dots {
+  display: flex; gap: 5px;
+  position: absolute; bottom: 10px; right: 14px;
+}
+.mock-slide .ms-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+}
+.mock-slide .ms-dot:first-child { background: var(--coastal-400); }
+
+.mock-jsx {
+  width: 260px; height: 185px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-out);
+}
+.ba-showcase:hover .mock-jsx { transform: scale(1.02); }
+.mock-jsx-top {
+  height: 24px; background: rgba(0,0,0,0.3);
+  display: flex; align-items: center;
+  padding: 0 10px; gap: 4px;
+}
+.mock-jsx-top span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+}
+.mock-jsx-top span:first-child { background: rgba(107,149,186,0.5); }
+.mock-jsx-tabs {
+  display: flex; gap: 0; padding: 0 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.mock-jsx-tabs span {
+  padding: 6px 10px; font-family: var(--font-ui);
+  font-size: 8px; color: rgba(255,255,255,0.25);
+}
+.mock-jsx-tabs span:first-child {
+  color: var(--coastal-400);
+  border-bottom: 1.5px solid var(--coastal-600);
+}
+.mock-jsx-body {
+  padding: 10px; display: grid;
+  grid-template-columns: 1fr 1fr; gap: 6px;
+}
+.mock-jsx-card {
+  height: 32px;
+  background: rgba(107,149,186,0.06);
+  border: 1px solid rgba(107,149,186,0.1);
+}
+.mock-jsx-card:first-child {
+  grid-column: 1 / -1; height: 40px;
+  background: rgba(107,149,186,0.1);
+}
+
+/* ══════════════════════════════════════
+   STATS BAR
+   ══════════════════════════════════════ */
+.stats-dark {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: var(--coastal-900);
+}
+.stat-d {
+  padding: var(--space-7) var(--space-6);
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.stat-d:last-child { border-right: none; }
+.stat-d-num {
+  font-family: var(--font-display); font-size: 48px;
+  color: var(--white); line-height: 1;
+  margin-bottom: var(--space-2); font-weight: 400;
+}
+.stat-d-label {
+  font-family: var(--font-ui); font-size: 12px;
+  color: var(--coastal-400); font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* ══════════════════════════════════════
+   PRO TIPS
+   ══════════════════════════════════════ */
+.tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.tip-card {
+  padding: var(--space-6); border: 1px solid var(--gray-200);
+  margin: -0.5px; transition: all 300ms var(--ease-out);
+  position: relative;
+}
+.tip-card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--coastal-600), var(--coastal-400));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 300ms var(--ease-out);
+}
+.tip-card:hover { background: var(--coastal-50); }
+.tip-card:hover::after { transform: scaleX(1); }
+.tip-card h4 {
+  font-family: var(--font-ui); font-size: 14px;
+  font-weight: 500; color: var(--coastal-900);
+  margin-bottom: var(--space-3);
+}
+.tip-card p {
+  font-family: var(--font-ui); font-size: 13px;
+  color: var(--gray-500); line-height: 1.65;
+}
+.tip-card p strong { color: var(--coastal-800); font-weight: 500; }
+
+/* ══════════════════════════════════════
+   BUSINESS CASE
+   ══════════════════════════════════════ */
+.dark-callout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--coastal-800);
+}
+.dark-callout-content {
+  padding: var(--space-10) var(--space-8);
+  display: flex; flex-direction: column;
+  justify-content: center;
+}
+.dark-callout-content .overline { color: var(--coastal-400); }
+.dark-callout-content .overline::before { background: var(--coastal-400); }
+.dark-callout-content h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.5vw, 48px);
+  color: var(--white); line-height: 1.06;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.015em; font-weight: 400;
+}
+.dark-callout-content h2 em { font-style: italic; color: var(--coastal-400); }
+.dark-callout-content > p {
+  font-family: var(--font-body-serif); font-size: 16px;
+  color: rgba(255,255,255,0.4); line-height: 1.7;
+  font-weight: 300; max-width: 420px;
+  margin-bottom: var(--space-5);
+}
+.check-list {
+  list-style: none; display: flex;
+  flex-direction: column; gap: 14px;
+  margin-bottom: var(--space-6);
+}
+.check-list li {
+  font-family: var(--font-ui); font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  display: flex; align-items: flex-start;
+  gap: 12px; line-height: 1.5;
+}
+.check-list li::before {
+  content: '✓'; color: var(--coastal-400);
+  font-weight: 500; font-size: 13px;
+  flex-shrink: 0; margin-top: 1px;
+}
+.dark-callout-visual {
+  position: relative; overflow: hidden; min-height: 480px;
+}
+.dark-callout-visual::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--coastal-600), var(--coastal-900));
+}
+
+.comparison-section {
+  background: var(--coastal-900);
+  padding: 0 var(--space-8) var(--space-9);
+}
+.comparison-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--space-6); max-width: 1200px; margin: 0 auto;
+}
+.comparison-col {
+  padding: var(--space-7);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.comparison-col-label {
+  font-family: var(--font-ui); font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 500; color: var(--coastal-400);
+  margin-bottom: var(--space-5);
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.comparison-col-label::before {
+  content: ''; width: 16px; height: 1.5px;
+  background: var(--coastal-400);
+}
+.comparison-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.comparison-list li {
+  font-family: var(--font-ui); font-size: 14px;
+  color: rgba(255,255,255,0.45); line-height: 1.6;
+  padding-left: 20px; position: relative;
+}
+.comparison-list li::before {
+  content: '•'; position: absolute; left: 0;
+  color: rgba(255,255,255,0.2);
+}
+.comparison-list.has-checks li::before {
+  content: '✓'; color: var(--coastal-400); font-size: 12px;
+}
+.comparison-bottom {
+  margin-top: var(--space-5); padding-top: var(--space-4);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-family: var(--font-ui); font-size: 13px;
+  color: var(--coastal-400); font-weight: 500;
+}
+
+/* ══════════════════════════════════════
+   CTA
+   ══════════════════════════════════════ */
+.dark-cta {
+  background: var(--coastal-900); padding: var(--space-10) var(--space-8);
+  text-align: center; position: relative; overflow: hidden;
+}
+.dark-cta::before {
+  content: ''; position: absolute;
+  top: -40%; right: -20%; width: 80%; height: 130%;
+  background: radial-gradient(ellipse, rgba(107,149,186,0.08) 0%, transparent 55%);
+  pointer-events: none;
+}
+.dark-cta > * { position: relative; z-index: 1; }
+.dark-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 60px);
+  color: var(--white); line-height: 1.04;
+  letter-spacing: -0.015em;
+  margin-bottom: var(--space-4); font-weight: 400;
+}
+.dark-cta h2 em { font-style: italic; color: var(--coastal-400); }
+.dark-cta p {
+  font-family: var(--font-body-serif); font-size: 17px;
+  color: rgba(255,255,255,0.35); max-width: 500px;
+  margin: 0 auto var(--space-7); font-weight: 300;
+  font-style: italic; line-height: 1.7;
+}
+
+/* ══════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════ */
+.mega-footer {
+  background: var(--coastal-900);
+  padding: var(--space-9) var(--space-8) var(--space-7);
+  position: relative; overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.footer-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-7); max-width: 1200px;
+  margin: 0 auto var(--space-9);
+  position: relative; z-index: 1;
+}
+.footer-col-head {
+  font-family: var(--font-ui); font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 500; color: var(--coastal-400);
+  margin-bottom: var(--space-4);
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a {
+  font-family: var(--font-ui); font-size: 14px;
+  color: rgba(255,255,255,0.4); text-decoration: none;
+  transition: color 200ms;
+}
+.footer-links a:hover { color: var(--white); }
+.footer-mega-logo {
+  font-family: var(--font-ui);
+  font-size: clamp(52px, 10vw, 150px);
+  font-weight: 500; color: rgba(255,255,255,0.03);
+  letter-spacing: 6px; text-transform: uppercase;
+  text-align: center; line-height: 1;
+  position: relative; z-index: 1;
+}
+.footer-badges {
+  display: flex; justify-content: center; gap: 12px;
+  margin-top: var(--space-5);
+  position: relative; z-index: 1;
+}
+.footer-badge {
+  font-family: var(--font-ui); font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  font-weight: 500; padding: 6px 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--coastal-400);
+}
+.footer-bottom {
+  text-align: center; padding-top: var(--space-6);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: var(--space-6);
+  position: relative; z-index: 1;
+}
+.footer-bottom p {
+  font-family: var(--font-ui); font-size: 11px;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ══════════════════════════════════════
+   TOAST NOTIFICATION
+   ══════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 32px; right: 32px;
+  background: var(--coastal-900);
+  color: var(--white);
+  padding: 16px 24px;
+  font-family: var(--font-ui); font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: var(--shadow-xl);
+  z-index: 200;
+  transform: translateY(120%);
+  opacity: 0;
+  transition: all 0.4s var(--ease-out);
+  display: flex; align-items: center; gap: 10px;
+  max-width: 400px;
+}
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+.toast-icon { font-size: 18px; flex-shrink: 0; }
+.toast-text { line-height: 1.4; }
+.toast-text small {
+  display: block;
+  font-size: 12px;
+  color: var(--coastal-400);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* ══════════════════════════════════════
+   IMAGE LIBRARY
+   ══════════════════════════════════════ */
+.image-library-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.img-card {
+  border: 1px solid var(--gray-200);
+  margin: -0.5px;
+  background: var(--white);
+  transition: all 300ms var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+.img-card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--coastal-600), var(--coastal-400));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 300ms var(--ease-out);
+}
+.img-card:hover { z-index: 1; }
+.img-card:hover::after { transform: scaleX(1); }
+.img-preview {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 1px solid var(--gray-200);
+  transition: transform 0.6s var(--ease-out);
+}
+.img-card:hover .img-preview { transform: scale(1.03); }
+.img-card-body { padding: var(--space-4); }
+.img-card-title {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--coastal-900);
+  margin-bottom: 4px;
+}
+.img-card-meta {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--gray-400);
+  letter-spacing: 0.3px;
+}
+
+/* ══════════════════════════════════════
+   DESIGN SYSTEM FILES
+   ══════════════════════════════════════ */
+.files-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.file-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--gray-200);
+  margin: -0.5px;
+  background: var(--white);
+  text-decoration: none;
+  color: inherit;
+  transition: all 300ms var(--ease-out);
+  position: relative;
+}
+.file-card::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--coastal-600), var(--coastal-400));
+  transform: scaleY(0); transform-origin: top;
+  transition: transform 300ms var(--ease-out);
+}
+.file-card:hover { background: var(--coastal-50); }
+.file-card:hover::after { transform: scaleY(1); }
+.file-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--coastal-100);
+  border: 1px solid var(--coastal-200);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.file-name {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--coastal-900);
+  margin-bottom: 2px;
+}
+.file-desc {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--gray-400);
+  line-height: 1.5;
+}
+.file-dl {
+  margin-left: auto;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--gray-200);
+  font-size: 16px;
+  color: var(--gray-400);
+  flex-shrink: 0;
+  transition: all var(--duration-fast);
+}
+.file-card:hover .file-dl {
+  border-color: var(--coastal-600);
+  color: var(--coastal-600);
+  background: var(--coastal-50);
+}
+
+/* ══════════════════════════════════════
+   WORKFLOW GRID RESPONSIVE
+   ══════════════════════════════════════ */
+.workflow-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .ds-section { padding: var(--space-7) var(--space-5); }
+  .prompt-section { padding: var(--space-7) var(--space-5); }
+  .card-grid, .tips-grid { grid-template-columns: 1fr; }
+  .image-library-grid { grid-template-columns: 1fr 1fr; }
+  .workflow-steps { grid-template-columns: 1fr 1fr; }
+  .steps-track { grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  .steps-track::before { display: none; }
+  .ba-showcase { grid-template-columns: 1fr; }
+  .dark-callout { grid-template-columns: 1fr; }
+  .comparison-grid { grid-template-columns: 1fr; }
+  .stats-dark { grid-template-columns: 1fr 1fr; }
+  .hero { min-height: 85vh; padding: var(--space-7); padding-top: 120px; }
+  .nav-links { display: none; }
+  .nav-inner { padding: 0 var(--space-5); }
+  .footer-grid { grid-template-columns: 1fr; }
+  .dark-callout-visual { min-height: 200px; }
+  .ba-preview-before { border-right: none; }
+  .ba-label-before { border-right: none; }
+  .how-it-works { padding: var(--space-7) var(--space-5); }
+  .comparison-section { padding: 0 var(--space-5) var(--space-7); }
+  .hero-scroll-hint { display: none; }
+  .prompt-header { padding: var(--space-4) var(--space-5); }
+  .prompt-body { padding: 0 var(--space-5) var(--space-5); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toast-icon">✓</span>
+  <div class="toast-text" id="toast-text"></div>
+</div>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav-bar" id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">Coastal Wealth</div>
+    <ul class="nav-links">
+      <li><a href="#templates">Templates</a></li>
+      <li><a href="#prompts">Prompts</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#tips">Pro Tips</a></li>
+      <li><a href="#workflows">Workflows</a></li>
+      <li><a href="#images">Images</a></li>
+    </ul>
+    <a href="#templates" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Internal Resource</div>
+    <div class="subtitle-top">Prompts, templates, and workflows for the Coastal Wealth team</div>
+    <h1>Design-quality<br>output from <em>every</em><br>team member.</h1>
+    <p class="hero-body">
+      Pre-built design files, battle-tested prompts, and step-by-step workflows that turn Word docs into designed decks, PDFs into interactive experiences, and ideas into polished collateral — in minutes.
+    </p>
+    <div class="hero-actions">
+      <div class="btn-row">
+        <a href="#templates" class="btn btn-accent">Browse Templates →</a>
+        <a href="#prompts" class="btn btn-white-outline">View Prompt Library</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="how-it-works">
+  <div class="how-inner">
+    <div class="overline reveal" style="color:var(--coastal-400)"><span style="width:24px;height:1.5px;background:var(--coastal-400);display:inline-block"></span>How It Works</div>
+    <h2 class="section-heading reveal" style="color:var(--white);max-width:500px;">From zero to polished<br>in <em style="color:var(--coastal-400)">3 minutes</em>.</h2>
+    <div class="steps-track">
+      <div class="step-item reveal reveal-delay-1">
+        <div class="step-number">01</div>
+        <h4>Pick a Template</h4>
+        <p>Choose the format you need — deck, flyer, interactive JSX, social graphic, or email.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-2">
+        <div class="step-number">02</div>
+        <h4>Download the Prompt</h4>
+        <p>Each template comes with a tested prompt file containing the full Coastal design system.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-3">
+        <div class="step-number">03</div>
+        <h4>Paste into SS</h4>
+        <p>Open your Smart System (SS), paste the prompt, then type your topic or attach a document to transform.</p>
+      </div>
+      <div class="step-item reveal reveal-delay-4">
+        <div class="step-number">04</div>
+        <h4>Get Your Output</h4>
+        <p>SS generates on-brand HTML or JSX. Preview, screenshot, print to PDF, or present.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEMPLATES ═══ -->
+<div class="ds-section" id="templates">
+  <div class="ds-section-title reveal">Template Library</div>
+  <div class="overline reveal">Download · Paste · Create</div>
+  <h2 class="section-heading reveal">Every template includes<br>the <em>design system</em>.</h2>
+  <p class="section-lead reveal">
+    Click "Download Prompt" to get a .txt file with the full prompt + design tokens. Drag it into your SS or copy-paste the contents.
+  </p>
+
+  <div class="card-grid">
+    <div class="card reveal">
+      <div class="card-type-tag">Presentation</div>
+      <h3>Landscape Deck (16:9)</h3>
+      <div class="card-meta-row"><span>5 slide layouts</span><span>HTML output</span></div>
+      <p>Recruiting presentations, client reviews, team meetings. Includes title, content, data, comparison, and closing slide patterns.</p>
+      <div class="card-actions">
+        <button class="btn btn-outline btn-sm" onclick="scrollToPrompt('prompt-deck')">View Prompt</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPromptFile('landscape-deck')">Download Prompt ↓</button>
+      </div>
+    </div>
+    <div class="card reveal reveal-delay-1">
+      <div class="card-type-tag">Presentation</div>
+      <h3>Portrait Deck (9:16)</h3>
+      <div class="card-meta-row"><span>5 slide layouts</span><span>HTML output</span></div>
+      <p>Vertical format for mobile-first presentations, advisor profiles, and scrollable one-pagers.</p>
+      <div class="card-actions">
+        <button class="btn btn-outline btn-sm" onclick="scrollToPrompt('prompt-deck')">View Prompt</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPromptFile('portrait-deck')">Download Prompt ↓</button>
+      </div>
+    </div>
+    <div class="card reveal reveal-delay-2">
+      <div class="card-type-tag">Print</div>
+      <h3>Event Flyer / One-Pager</h3>
+      <div class="card-meta-row"><span>8.5×11</span><span>HTML → Print</span></div>
+      <p>Single-page design for event promotions, market commentary summaries, recruiting highlights, and advisor communications.</p>
+      <div class="card-actions">
+        <button class="btn btn-outline btn-sm" onclick="scrollToPrompt('prompt-flyer')">View Prompt</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPromptFile('flyer')">Download Prompt ↓</button>
+      </div>
+    </div>
+    <div class="card reveal">
+      <div class="card-type-tag">Interactive</div>
+      <h3>PDF → JSX Experience</h3>
+      <div class="card-meta-row"><span>React / JSX</span><span>Any doc length</span></div>
+      <p>Transform any long-form PDF or Word doc into a navigable, tabbed, searchable single-page experience. The highest-impact workflow.</p>
+      <div class="card-actions">
+        <button class="btn btn-outline btn-sm" onclick="scrollToPrompt('prompt-jsx')">View Prompt</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPromptFile('jsx-converter')">Download Prompt ↓</button>
+      </div>
+    </div>
+    <div class="card reveal reveal-delay-1">
+      <div class="card-type-tag">Social</div>
+      <h3>LinkedIn / Social Graphics</h3>
+      <div class="card-meta-row"><span>1:1 &amp; 16:9</span><span>HTML output</span></div>
+      <p>Square and landscape formats for LinkedIn posts, advisor spotlights, market commentary graphics, and recruiting announcements.</p>
+      <div class="card-actions">
+        <button class="btn btn-outline btn-sm" onclick="scrollToPrompt('prompt-social')">View Prompt</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPromptFile('social-graphics')">Download Prompt ↓</button>
+      </div>
+    </div>
+    <div class="card reveal reveal-delay-2">
+      <div class="card-type-tag">Writing</div>
+      <h3>Brand Voice &amp; Content</h3>
+      <div class="card-meta-row"><span>All formats</span><span>Text output</span></div>
+      <p>LinkedIn posts, emails, bios, announcements, and long-form content — all in Coastal Wealth's voice. Not a design template, but essential.</p>
+      <div class="card-actions">
+        <button class="btn btn-outline btn-sm" onclick="scrollToPrompt('prompt-content')">View Prompt</button>
+        <button class="btn btn-primary btn-sm" onclick="downloadPromptFile('brand-voice')">Download Prompt ↓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROMPT LIBRARY ═══ -->
+<section class="prompt-section" id="prompts">
+  <div class="prompt-section-inner">
+    <div class="overline reveal">Prompt Library</div>
+    <h2 class="section-heading reveal">Battle-tested prompts.<br>Copy, paste, <em>create</em>.</h2>
+    <p class="section-lead reveal">
+      Each prompt has been optimized for consistent, high-quality output. Click to expand, then copy or download as a .txt file.
+    </p>
+
+    <div class="prompts-list">
+
+      <!-- ─── DECK PROMPT ─── -->
+      <div class="prompt-item reveal" id="prompt-deck">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">📊</div>
+            <div>
+              <div class="prompt-title">Presentation Deck Builder</div>
+              <div class="prompt-subtitle">16:9 landscape or 9:16 portrait slide decks</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">SS</span>
+                <span class="prompt-tag">HTML Output</span>
+                <span class="prompt-tag">Design System v6</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-deck')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('landscape-deck')">Download as .txt</button></div><span id="pt-deck"><span class="hl">&lt;role&gt;</span>
+You are a senior presentation designer creating slide decks for Coastal Wealth, a MassMutual-affiliated wealth management firm with 350+ advisors across Florida and Georgia.
+<span class="hl">&lt;/role&gt;</span>
+
+<span class="hl">&lt;output_format&gt;</span>
+Create a single, self-contained HTML file. Each slide is a &lt;section&gt; element sized exactly 1280×720px (16:9). Include all CSS inline. The file must work when opened directly in a browser with no build step or external dependencies beyond the font CDNs listed below.
+<span class="hl">&lt;/output_format&gt;</span>
+
+<span class="hl">&lt;design_system&gt;</span>
+<span class="hl-d">/* ── FONTS (include both links in &lt;head&gt;) ── */</span>
+&lt;link rel="stylesheet" href="https://use.typekit.net/tpw8nnl.css"&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet"&gt;
+
+<span class="hl-b">Display font:</span>  font-family: 'marlide-display-variable', 'Playfair Display', Georgia, serif
+<span class="hl-b">Body serif:</span>   font-family: 'Source Serif 4', Georgia, serif
+<span class="hl-b">UI sans:</span>      font-family: 'DM Sans', -apple-system, sans-serif
+
+<span class="hl-d">/* ── COLORS ── */</span>
+<span class="hl-b">Primary dark:</span>     #252f4a  <span class="hl-d">(backgrounds, headings)</span>
+<span class="hl-b">Dark panel:</span>       #3c506f  <span class="hl-d">(slide backgrounds)</span>
+<span class="hl-b">Accent:</span>           #6b95ba  <span class="hl-d">(buttons, overlines, links)</span>
+<span class="hl-b">On-dark accent:</span>   #89adc8  <span class="hl-d">(italic text on dark, labels)</span>
+<span class="hl-b">Light accent:</span>     #5d7fa0  <span class="hl-d">(italic text on light)</span>
+<span class="hl-b">Light bg:</span>         #c9dce8  <span class="hl-d">(alternate slide backgrounds)</span>
+<span class="hl-b">Sand warm bg:</span>     #faf7f2  <span class="hl-d">(warm alternate backgrounds)</span>
+<span class="hl-b">Body text:</span>        #737373
+<span class="hl-b">Labels:</span>           #a3a3a3
+<span class="hl-b">Borders:</span>          #e8e8e8
+
+<span class="hl-d">/* ── TYPOGRAPHY RULES ── */</span>
+Headlines:   marlide-display-variable, 400 weight, line-height 0.94, letter-spacing -0.02em
+Overlines:   DM Sans, 11px, 500 weight, 3px letter-spacing, uppercase, color #6b95ba
+             Always preceded by a 24px horizontal rule in the same color
+Body copy:   Source Serif 4, 17px, 300 weight, line-height 1.75, color #737373
+UI text:     DM Sans, 16px, 400 weight, line-height 1.65
+Stat numbers: marlide-display-variable, 48-52px, 400 weight
+<span class="hl-w">Italic accent words in headings:</span> Wrap in &lt;em&gt; tags. On dark backgrounds use color #89adc8. On light backgrounds use #5d7fa0.
+
+<span class="hl-d">/* ── COMPONENT PATTERNS ── */</span>
+Buttons:     14px DM Sans, 500 weight, padding 14px 32px, hover: translateY(-1px) + box-shadow 0 4px 16px rgba(37,47,74,0.06)
+Borders:     1px solid #e8e8e8 (light) or rgba(255,255,255,0.06) (dark)
+Cards:       On hover: background #f4f8fb + 3px gradient top-border (#6b95ba → #89adc8)
+Motion:      cubic-bezier(0.16, 1, 0.3, 1) easing, 200ms for hovers, 400ms for reveals
+<span class="hl">&lt;/design_system&gt;</span>
+
+<span class="hl">&lt;slide_types&gt;</span>
+Generate these slide patterns as needed:
+
+1. <span class="hl-b">TITLE SLIDE</span> — Full #252f4a background with radial gradient glow. Overline + large marlide-display heading (48-64px) with one &lt;em&gt; accent word + serif body text below + button row.
+
+2. <span class="hl-b">CONTENT SLIDE</span> — White or #faf7f2 background. Overline + heading left-aligned + Source Serif body copy. Optional: large stat callout on the right (48px number + label).
+
+3. <span class="hl-b">DATA SLIDE</span> — 3-column grid with 1px #e8e8e8 borders. Each cell: marlide-display number (52px, #252f4a) + DM Sans label (13px, #a3a3a3). Centered.
+
+4. <span class="hl-b">COMPARISON SLIDE</span> — 2 or 3-column edge-to-edge grid. Each card: numbered header + DM Sans heading (18px, 500) + Source Serif description. Hover reveals gradient top-border.
+
+5. <span class="hl-b">CLOSING / CTA SLIDE</span> — #252f4a background with radial gradient glow (rgba(107,149,186,0.08)). Centered marlide-display heading with &lt;em&gt; accent word + serif italic subtext + accent button.
+<span class="hl">&lt;/slide_types&gt;</span>
+
+<span class="hl">&lt;rules&gt;</span>
+- Every slide must have generous whitespace — never crowd content
+- Maximum 6-8 lines of text per slide
+- Include "COASTAL WEALTH" in small caps (DM Sans 10px, 4px letter-spacing) at bottom-right of each slide
+- Use consistent spacing: 64px section padding, 48px between major elements, 24px between related items
+- The overall aesthetic is: warm, quiet, confident refinement — not flashy, not corporate
+<span class="hl">&lt;/rules&gt;</span>
+
+<span class="hl-g">&lt;task&gt;</span>
+<span class="hl-g">Create a presentation deck about the following topic. Determine the optimal number of slides (typically 8-15) based on the content provided:</span>
+
+[PASTE YOUR CONTENT, BULLET POINTS, OR TOPIC HERE]
+<span class="hl-g">&lt;/task&gt;</span></span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> Paste this entire prompt into your SS, then replace the last line with your topic, bullet points, or attach a document. Your SS generates an HTML file you can open in any browser.
+            <div class="tip">For portrait (9:16) decks, change the slide dimensions from 1280×720 to 720×1280 in the output_format section.</div>
+            <div class="tip">For best results, provide specific content rather than just a topic. "Create a deck about recruiting" will produce generic output. "Create a recruiting deck highlighting our 350+ advisor network, MassMutual affiliation, and 97% retention rate" will produce something much sharper.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── JSX PROMPT ─── -->
+      <div class="prompt-item reveal" id="prompt-jsx">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">⚡</div>
+            <div>
+              <div class="prompt-title">PDF / Word Doc → Interactive JSX</div>
+              <div class="prompt-subtitle">Convert any long document into a navigable single-page app</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">SS</span>
+                <span class="prompt-tag">JSX Output</span>
+                <span class="prompt-tag">Highest Impact</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-jsx')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('jsx-converter')">Download as .txt</button></div><span id="pt-jsx">You are a frontend developer and information designer. Your job is to take a long-form document and convert it into an interactive, single-file React (JSX) experience using the Coastal Wealth design system. You preserve ALL content from the original document — you never summarize or cut.
+
+<span class="hl">&lt;output_format&gt;</span>
+Create a single .jsx file with a default export React component. No required props. No external CSS files.
+
+Available libraries you can import:
+- React hooks: import { useState, useEffect, useMemo, useRef } from "react"
+- Lucide icons: import { Search, ChevronDown, ChevronRight, ArrowUp, ArrowRight, Menu, X, Users, DollarSign, Clock, MapPin, Phone, Mail, Globe, Building } from "lucide-react"
+- Recharts (for any data visualization): import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts"
+- Lodash: import _ from "lodash"
+
+<span class="hl-w">CRITICAL STYLING RULES FOR THE ARTIFACT VIEWER:</span>
+
+The artifact viewer does NOT have Tailwind's JIT compiler. This means arbitrary value classes like bg-[#252f4a], text-[#737373], border-[#e8e8e8] will <span class="hl-w">SILENTLY FAIL</span> — they render as transparent/invisible with no error. This is the #1 cause of "blank white page" bugs.
+
+Therefore:
+1. Use inline style objects for ALL custom colors, backgrounds, borders, font sizes, letter-spacing, and line-height values
+2. Use Tailwind classes ONLY for layout and spacing utilities that are in the pre-built stylesheet: grid, flex, gap-4, p-6, mb-8, hidden, md:flex, md:grid-cols-2, w-full, items-center, justify-between, etc.
+3. className="font-serif" DOES work and maps to the display font — use it for all headings
+4. <span class="hl-w">NEVER use bg-[#anything], text-[#anything], or border-[#anything]</span> — these will be invisible
+
+Start every file with a color constants block at the top, after imports:
+
+<span class="hl-b">const C = {</span>
+<span class="hl-b">  dark: "#252f4a",</span>        <span class="hl-d">// nav, hero, dark panels, headings</span>
+<span class="hl-b">  darkPanel: "#3c506f",</span>   <span class="hl-d">// mobile menu, secondary dark surfaces</span>
+<span class="hl-b">  accent: "#6b95ba",</span>      <span class="hl-d">// active tabs, overlines, accent buttons, links</span>
+<span class="hl-b">  onDark: "#89adc8",</span>      <span class="hl-d">// text on dark backgrounds</span>
+<span class="hl-b">  lightAccent: "#5d7fa0",</span> <span class="hl-d">// italic accent text on light backgrounds</span>
+<span class="hl-b">  lightBg: "#e8f0f5",</span>     <span class="hl-d">// icon circles, tags, badges</span>
+<span class="hl-b">  hoverBg: "#f4f8fb",</span>     <span class="hl-d">// card hover states</span>
+<span class="hl-b">  sand: "#faf7f2",</span>        <span class="hl-d">// warm alternate section backgrounds</span>
+<span class="hl-b">  sandFill: "#f3ede4",</span>    <span class="hl-d">// button fills on warm surfaces</span>
+<span class="hl-b">  body: "#737373",</span>        <span class="hl-d">// DM Sans body text</span>
+<span class="hl-b">  serif: "#525252",</span>       <span class="hl-d">// serif editorial body text</span>
+<span class="hl-b">  labels: "#a3a3a3",</span>      <span class="hl-d">// stat labels, captions, metadata</span>
+<span class="hl-b">  borders: "#e8e8e8",</span>     <span class="hl-d">// dividers, card borders</span>
+<span class="hl-b">};</span>
+
+Reference C.dark, C.accent, etc. in all inline style objects throughout the component.
+<span class="hl">&lt;/output_format&gt;</span>
+
+<span class="hl">&lt;design_system&gt;</span>
+<span class="hl-b">FONTS</span> — loaded automatically in the artifact viewer:
+- Display/headings: 'marlide-display-variable' → use className="font-serif"
+- Body/UI: 'DM Sans' → the default sans-serif in the environment
+
+<span class="hl-b">TYPOGRAPHY PATTERNS</span> (combine className for font-family + inline style for everything else):
+
+<span class="hl-b">Hero heading:</span>
+  className="font-serif"
+  style={{ fontSize: 48, fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 0.94, color: "white" }}
+
+<span class="hl-b">Section heading:</span>
+  className="font-serif"
+  style={{ fontSize: 36, fontWeight: 400, lineHeight: 1.1, color: C.dark }}
+
+<span class="hl-b">Stat number:</span>
+  className="font-serif"
+  style={{ fontSize: 42, fontWeight: 400, color: C.dark, lineHeight: 1 }}
+
+<span class="hl-b">Overline</span> — always a reusable component:
+  A flex row with a 24px × 1.5px colored bar + uppercase label
+  Bar color: C.accent (light) or C.onDark (dark)
+  Text: fontSize 11, fontWeight 500, letterSpacing 3, textTransform "uppercase"
+
+<span class="hl-b">Body editorial:</span>
+  className="font-serif"
+  style={{ fontSize: 17, fontWeight: 300, lineHeight: 1.75, color: C.serif }}
+
+<span class="hl-b">Body UI:</span>
+  style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.65, color: C.body }}
+
+<span class="hl-b">Italic accent words in headings:</span>
+  Wrap in &lt;em&gt; with style={{ fontStyle: "italic", color: C.lightAccent }} on light
+  Or style={{ fontStyle: "italic", color: C.onDark }} on dark
+
+<span class="hl-b">COMPONENT PATTERNS:</span>
+
+Buttons:
+  Primary: style={{ background: C.dark, color: "white", padding: "14px 32px", fontSize: 14, fontWeight: 500, border: "none", cursor: "pointer" }}
+  Accent:  style={{ background: C.accent, color: "white", ... same sizing }}
+  Outline: style={{ background: "none", border: `1.5px solid ${C.borders}`, color: C.dark }}
+
+Cards:
+  Default: style={{ border: `1px solid ${C.borders}`, background: "white" }}
+  Hovered: background changes to C.hoverBg, top border becomes 3px solid C.accent
+  Use useState for hover tracking on each card
+
+Icon circles:
+  style={{ width: 32, height: 32, borderRadius: "50%", background: C.lightBg, display: "flex", alignItems: "center", justifyContent: "center" }}
+
+Tags/badges:
+  style={{ fontSize: 10, background: C.lightBg, color: C.lightAccent, padding: "4px 10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: 1 }}
+
+Accordions:
+  Reusable component with: number (optional), title, isOpen, onToggle
+  When open: border color shifts to C.accent + "55", background white
+  ChevronDown icon rotates 180° when open
+  Content uses maxHeight + opacity transition for smooth reveal
+  style={{ transition: "all 300ms cubic-bezier(0.16,1,0.3,1)" }}
+<span class="hl">&lt;/design_system&gt;</span>
+
+<span class="hl">&lt;structure&gt;</span>
+Build the JSX with ALL of these interactive features:
+
+1. <span class="hl-b">STICKY NAVIGATION</span>
+   - Fixed top bar with dark background (C.dark)
+   - Left: document title in small caps (fontSize 11, letterSpacing 3, uppercase, white 70% opacity)
+   - Right (desktop): horizontal tab buttons for each major section
+   - Active tab: white text + 2px bottom border in C.accent
+   - Inactive: white text at 40% opacity
+   - Mobile: hamburger Menu/X icon toggling dropdown with C.darkPanel background
+   - Clicking a tab sets active content AND scrolls to that section
+
+2. <span class="hl-b">HERO SECTION</span>
+   - Dark background (C.dark) with radial gradient glow
+   - Overline with document type and date
+   - Large serif heading with one &lt;em&gt; accent word in C.onDark
+   - 2-3 sentence summary in serif italic at reduced opacity
+   - Hero is ALWAYS visible — sits above tabbed content, not inside a tab
+
+3. <span class="hl-b">TAB PILLS + CONTENT PANELS</span>
+   - Below the hero, a row of pill-style tab buttons (redundant with nav — intentional for usability)
+   - Active pill: C.dark background with white text
+   - Inactive pill: white background with C.borders border and C.body text
+   - Below pills, render ONLY the active tab's panel content
+   - Each panel = one major section from the original doc
+
+4. <span class="hl-b">WITHIN EACH PANEL</span>, use these patterns as appropriate:
+
+   <span class="hl-b">KEY STATS:</span> Grid of stat cards — icon circle + large serif number + small label, 2 cols mobile / 4 cols desktop
+   <span class="hl-b">TABLES:</span> Styled rows with bold header, hover background, alternating row colors
+   <span class="hl-b">DENSE CONTENT:</span> Expandable Accordion components — numbered prefix, title, expandable serif detail, radio behavior (one open at a time)
+   <span class="hl-b">SEARCH/FILTER:</span> Real-time filtering input at top of multi-item sections
+   <span class="hl-b">CARDS WITH TAGS:</span> Colored tag badge + title + expandable detail
+   <span class="hl-b">QUOTE BLOCKS:</span> Dark panel with gradient, decorative " mark, serif italic quote, attribution
+   <span class="hl-b">LEADER/PERSON CARDS:</span> Avatar circle with initials, serif name, accent title, expandable bio
+   <span class="hl-b">CTA PANELS:</span> Dark background with gradient glow, serif heading with &lt;em&gt;, accent button
+
+5. <span class="hl-b">FOOTER</span>
+   - Dark background (C.dark), small caps brand name + confidential notice, 20% white opacity
+<span class="hl">&lt;/structure&gt;</span>
+
+<span class="hl">&lt;rules&gt;</span>
+- Preserve ALL content from the source document — do not summarize or omit any sections
+- Break walls of text into smaller visual chunks using overlines, cards, accordions, and generous spacing
+- Mobile-responsive: use Tailwind's hidden md:flex and grid classes for responsive layout
+- Every section should feel like a designed experience, not just reformatted text
+- The overall aesthetic is: warm, quiet, confident refinement — not flashy, not corporate
+- <span class="hl-w">NEVER use Tailwind arbitrary value classes for colors</span> — always use inline style objects
+- Always build reusable sub-components: Overline, Accordion, StatCard, etc.
+- Use useState for: active tab, accordion open/close, search input, card hover states
+- All interactive transitions should use cubic-bezier(0.16, 1, 0.3, 1) easing
+- Hover effects: cards get C.hoverBg background + 3px top border in C.accent
+- Dark panels always get a subtle radial gradient glow for depth
+<span class="hl">&lt;/rules&gt;</span>
+
+<span class="hl-g">&lt;task&gt;</span>
+<span class="hl-g">I am attaching a document. Read it completely, then convert it into this interactive JSX format. Preserve all content — every section, paragraph, data point, and detail from the original.</span>
+
+[ATTACH YOUR PDF OR WORD DOC HERE]
+<span class="hl-g">&lt;/task&gt;</span></span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> Paste this prompt into your SS, then attach your PDF or Word doc. Your SS generates a .jsx file and shows a live preview in the artifact panel — you can click through tabs and interact with it immediately.
+            <div class="tip">This is the single most impressive workflow in the toolkit. A 40-page compliance document becomes a navigable, visual experience. Great for advisor handbooks, benefits guides, fee schedules, and any dense reference material.</div>
+            <div class="tip">If the document is very long (40+ pages), Your SS may need to generate it in parts. Ask it to "continue building the remaining sections" if the output gets cut off.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── FLYER PROMPT ─── -->
+      <div class="prompt-item reveal" id="prompt-flyer">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">📄</div>
+            <div>
+              <div class="prompt-title">Event Flyer / One-Pager</div>
+              <div class="prompt-subtitle">Print-ready 8.5×11 for events, announcements, market commentary</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">SS</span>
+                <span class="prompt-tag">HTML → Print</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-flyer')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('flyer')">Download as .txt</button></div><span id="pt-flyer"><span class="hl">&lt;role&gt;</span>
+You are a print designer creating a single-page flyer for Coastal Wealth, a MassMutual-affiliated wealth management firm.
+<span class="hl">&lt;/role&gt;</span>
+
+<span class="hl">&lt;output_format&gt;</span>
+Create a single, self-contained HTML file. The page is exactly 8.5 inches × 11 inches (816×1056px at 96dpi). Include @media print rules so it prints cleanly on standard letter paper. Include all CSS inline. No external dependencies beyond the font CDNs below.
+<span class="hl">&lt;/output_format&gt;</span>
+
+<span class="hl">&lt;design_system&gt;</span>
+<span class="hl-d">/* ── FONTS ── */</span>
+&lt;link rel="stylesheet" href="https://use.typekit.net/tpw8nnl.css"&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet"&gt;
+
+Display: 'marlide-display-variable', 'Playfair Display', Georgia, serif
+Body:    'Source Serif 4', Georgia, serif
+UI:      'DM Sans', sans-serif
+
+<span class="hl-d">/* ── COLORS ── */</span>
+Dark: #252f4a  |  Accent: #6b95ba  |  On-dark: #89adc8
+Sand: #faf7f2  |  Body text: #737373  |  Borders: #e8e8e8
+
+<span class="hl-d">/* ── LAYOUT ── */</span>
+TOP (approx 30%):     #252f4a background. Overline (DM Sans 11px, uppercase, 3px tracking, #89adc8, with 24px rule before). Headline: marlide-display, clamp(36px,5vw,52px), white, with one italic &lt;em&gt; word in #89adc8.
+MIDDLE (approx 50%):  White or #faf7f2 background. Key details in DM Sans 16px #737373. Descriptive copy in Source Serif 4 17px, 300 weight.
+BOTTOM (approx 20%):  CTA button (#6b95ba background, white text). Contact info. "COASTAL WEALTH" wordmark in DM Sans 11px, 4px letter-spacing, uppercase, #a3a3a3.
+<span class="hl">&lt;/design_system&gt;</span>
+
+<span class="hl">&lt;rules&gt;</span>
+- Maximum 3 type sizes (headline, subhead, body)
+- Scannable in under 5 seconds — use visual hierarchy aggressively
+- One primary CTA only
+- Use thin rules (1px #e8e8e8) to separate sections, not heavy boxes
+- Include @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } } for accurate print colors
+<span class="hl">&lt;/rules&gt;</span>
+
+<span class="hl-g">&lt;task&gt;</span>
+<span class="hl-g">Create a flyer for the following:</span>
+[DESCRIBE YOUR EVENT, ANNOUNCEMENT, OR CONTENT]
+<span class="hl-g">&lt;/task&gt;</span></span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> Great for event invitations, market commentary one-pagers, and advisor-facing communications. Open the HTML in your browser and use File → Print → Save as PDF.
+            <div class="tip">Include specific details: date, time, location, RSVP info, speaker names. The more specific you are, the less generic the output.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SOCIAL PROMPT ─── -->
+      <div class="prompt-item reveal" id="prompt-social">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">📱</div>
+            <div>
+              <div class="prompt-title">LinkedIn / Social Media Graphics</div>
+              <div class="prompt-subtitle">1080×1080 square or 1920×1080 landscape graphics</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">SS</span>
+                <span class="prompt-tag">HTML → Screenshot</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-social')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('social-graphics')">Download as .txt</button></div><span id="pt-social"><span class="hl">&lt;role&gt;</span>
+You are a social media designer creating branded graphics for Coastal Wealth's LinkedIn and social media channels.
+<span class="hl">&lt;/role&gt;</span>
+
+<span class="hl">&lt;output_format&gt;</span>
+Create a single HTML file containing the graphic at the exact requested dimensions. Use fixed width/height in pixels — this will be screenshotted, not responsive. Include all CSS inline. No dependencies beyond font CDNs.
+
+Common sizes:
+- LinkedIn post (square): 1080×1080px
+- LinkedIn post (landscape): 1200×627px
+- LinkedIn carousel slide: 1080×1350px
+<span class="hl">&lt;/output_format&gt;</span>
+
+<span class="hl">&lt;design_system&gt;</span>
+Fonts: marlide-display-variable (Typekit tpw8nnl), DM Sans, Source Serif 4
+Colors: #252f4a (dark), #6b95ba (accent), #89adc8 (on-dark accent), #faf7f2 (sand), #737373 (body)
+
+<span class="hl-b">Layout patterns for social:</span>
+- Dark background (#252f4a) with radial gradient glow works best for high-engagement posts
+- Large stat or quote in marlide-display as the visual anchor
+- Overline with 24px rule for context/category
+- "COASTAL WEALTH" wordmark: DM Sans 10px, 4px letter-spacing, uppercase, bottom-right corner
+- Keep text to absolute minimum — social graphics should communicate in 2-3 seconds
+
+<span class="hl-b">Typography for social:</span>
+- Primary text: marlide-display, 48-72px depending on length
+- Supporting text: DM Sans, 16-20px, max 2 lines
+- Italic &lt;em&gt; accent word in #89adc8 on dark backgrounds
+<span class="hl">&lt;/design_system&gt;</span>
+
+<span class="hl">&lt;rules&gt;</span>
+- Maximum 15 words of text on the graphic — social graphics are visual, not text documents
+- Always include the Coastal Wealth wordmark
+- Leave breathing room — at least 60px padding from all edges
+- One visual idea per graphic — don't try to communicate everything
+- If creating a carousel, each slide should work independently but flow as a narrative
+<span class="hl">&lt;/rules&gt;</span>
+
+<span class="hl-g">&lt;task&gt;</span>
+<span class="hl-g">Create a [SQUARE/LANDSCAPE] social media graphic for:</span>
+[DESCRIBE THE POST TOPIC, KEY MESSAGE, OR ANNOUNCEMENT]
+<span class="hl-g">&lt;/task&gt;</span></span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> Your SS generates an HTML file at the exact pixel dimensions. Open in your browser and screenshot it (or use a browser extension to capture the element). The screenshot is your social graphic.
+            <div class="tip">Specify the exact size you need upfront: "1080×1080 square" or "1200×627 landscape." This prevents awkward cropping later.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── CONTENT PROMPT ─── -->
+      <div class="prompt-item reveal" id="prompt-content">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">✍️</div>
+            <div>
+              <div class="prompt-title">Brand Voice &amp; Content Writer</div>
+              <div class="prompt-subtitle">LinkedIn posts, emails, bios, and marketing copy</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">SS</span>
+                <span class="prompt-tag">ChatGPT</span>
+                <span class="prompt-tag">Any SS Tool</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-content')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('brand-voice')">Download as .txt</button></div><span id="pt-content"><span class="hl">&lt;role&gt;</span>
+You are a senior marketing writer for Coastal Wealth. You write in the Coastal Wealth brand voice and understand the wealth management industry deeply.
+<span class="hl">&lt;/role&gt;</span>
+
+<span class="hl">&lt;brand_context&gt;</span>
+<span class="hl-b">Company:</span> Coastal Wealth — a MassMutual-affiliated wealth management firm
+<span class="hl-b">Size:</span> 350+ financial advisors across Florida and Georgia
+<span class="hl-b">Leadership:</span> Jeremy Straub (CEO/Founder), Harris Fishman (Chairman)
+<span class="hl-b">Positioning:</span> The premier independent platform — advisors choose Coastal Wealth because of superior infrastructure, culture, and growth support
+<span class="hl-b">Key differentiators:</span>
+  • MassMutual affiliation (institutional strength + independent flexibility)
+  • 350+ advisor network with 97% retention rate
+  • Proprietary technology stack
+  • Full-service support: marketing, compliance, operations, transition
+  • Hands-on, founder-led leadership
+<span class="hl">&lt;/brand_context&gt;</span>
+
+<span class="hl">&lt;voice_guidelines&gt;</span>
+<span class="hl-b">Tone:</span> Confident, warm, authoritative. Not stiff. Not corporate. Think: a respected colleague who knows their stuff and speaks plainly.
+
+<span class="hl-b">DO:</span>
+  • Use specific numbers and data points ("350+ advisors" not "hundreds of advisors")
+  • Write in active voice
+  • Lead with the value to the reader, not self-congratulation
+  • Use short paragraphs and line breaks for readability
+  • Be direct — say what you mean in the fewest words
+
+<span class="hl-b">DO NOT:</span>
+  • Use clichés: "navigate your financial journey," "holistic approach," "trusted partner," "leveraging synergies"
+  • Write in passive corporate-speak: "It is with great pleasure that we announce..."
+  • Use buzzwords without substance
+  • Over-use exclamation marks
+  • Sound like a compliance department wrote it
+  • Use more than 3 hashtags on LinkedIn posts
+<span class="hl">&lt;/voice_guidelines&gt;</span>
+
+<span class="hl">&lt;format_guidance&gt;</span>
+<span class="hl-b">LinkedIn posts:</span> 150-300 words. Hook in the first line (this is what shows before "see more"). Use line breaks between paragraphs. End with a clear takeaway or CTA, not a question.
+
+<span class="hl-b">Emails:</span> Clear subject line (under 50 characters). Scannable body — short paragraphs, bold key phrases. Single CTA. Sign off warmly but briefly.
+
+<span class="hl-b">Bios:</span> Third person. Lead with current role. Include 2-3 concrete accomplishments. Keep under 150 words unless otherwise specified.
+
+<span class="hl-b">Long-form:</span> Use subheadings every 2-3 paragraphs. Include pull-quotes and concrete data. Write for scanning first, reading second.
+<span class="hl">&lt;/format_guidance&gt;</span>
+
+<span class="hl-g">&lt;task&gt;</span>
+<span class="hl-g">Write the following content:</span>
+[DESCRIBE WHAT YOU NEED — be specific about format, audience, and key messages]
+<span class="hl-g">&lt;/task&gt;</span></span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> This works in any Smart System (SS) tool — it's a text prompt, not a design prompt. Use it whenever you need written content that sounds like Coastal Wealth.
+            <div class="tip">The more context you give about the audience and purpose, the better. "Write a LinkedIn post" is vague. "Write a LinkedIn post announcing Michael Swinehart's hire as Head of Wealth Management, targeting experienced advisors considering independence" is specific and will produce much better output.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── RESEARCH PROMPT ─── -->
+      <div class="prompt-item reveal" id="prompt-research">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">🔬</div>
+            <div>
+              <div class="prompt-title">Research &amp; Strategic Analysis</div>
+              <div class="prompt-subtitle">Competitive intel, market research, vendor evaluations</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">SS</span>
+                <span class="prompt-tag">Web Search</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-research')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('research-analysis')">Download as .txt</button></div><span id="pt-research"><span class="hl">&lt;role&gt;</span>
+You are a strategic analyst supporting the leadership team at Coastal Wealth. You produce actionable, data-driven analysis — not academic overviews. Every output should lead to a decision.
+<span class="hl">&lt;/role&gt;</span>
+
+<span class="hl">&lt;company_context&gt;</span>
+Coastal Wealth: MassMutual-affiliated independent wealth management firm. 350+ advisors across Florida and Georgia. CEO/Founder: Jeremy Straub. Chairman: Harris Fishman. Competes for advisor recruitment against IBDs (LPL, Cetera, Ameriprise), wirehouses (Morgan Stanley, Merrill), and RIA platforms (Dynasty, Hightower).
+<span class="hl">&lt;/company_context&gt;</span>
+
+<span class="hl">&lt;output_standards&gt;</span>
+1. <span class="hl-b">Lead with the "so what"</span> — first paragraph is the key takeaway and recommended action
+2. <span class="hl-b">Use specific data</span> — numbers, dates, names. No vague claims like "significant growth"
+3. <span class="hl-b">Structure clearly:</span> Executive Summary → Key Findings → Detailed Analysis → Recommendations → Next Steps
+4. <span class="hl-b">Use tables</span> for any comparison (competitors, vendors, options)
+5. <span class="hl-b">Flag assumptions</span> explicitly — mark anything you're inferring vs. confirming
+6. <span class="hl-b">Cite sources</span> when using web search — include links
+7. <span class="hl-b">End with 3-5 concrete next steps</span> with owners and timelines where possible
+<span class="hl">&lt;/output_standards&gt;</span>
+
+<span class="hl">&lt;analysis_types&gt;</span>
+<span class="hl-b">Competitive Intel:</span> Advisor count, payout grids, tech stack, recent hires/departures, market positioning
+<span class="hl-b">Market Research:</span> Industry trends, regulatory changes, fee benchmarking, demographic shifts
+<span class="hl-b">Strategic Brief:</span> Opportunity assessment with risks, financial impact, and recommended approach
+<span class="hl-b">Vendor Evaluation:</span> Feature comparison matrix, pricing tiers, pros/cons, recommendation with rationale
+<span class="hl">&lt;/analysis_types&gt;</span>
+
+<span class="hl-g">&lt;task&gt;</span>
+<span class="hl-g">Analyze the following (use web search for current data where relevant):</span>
+[DESCRIBE YOUR RESEARCH QUESTION OR ANALYSIS NEED]
+<span class="hl-g">&lt;/task&gt;</span></span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> Use this in your SS with web search enabled for the most current competitive data, fee benchmarks, and industry trends.
+            <div class="tip">Be specific about what you're comparing or evaluating. "Research our competitors" is too broad. "Compare Coastal Wealth's advisor payout grid against LPL, Cetera, and Ameriprise for an advisor doing $500K GDC" gives the SS a concrete task.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── DESIGN SYSTEM FILE ─── -->
+      <div class="prompt-item reveal" id="prompt-tokens">
+        <div class="prompt-header" onclick="togglePrompt(this)">
+          <div class="prompt-header-left">
+            <div class="prompt-icon">🎨</div>
+            <div>
+              <div class="prompt-title">Design System Token File</div>
+              <div class="prompt-subtitle">The raw design system — attach alongside any custom prompt</div>
+              <div class="prompt-tag-row">
+                <span class="prompt-tag">Reference File</span>
+                <span class="prompt-tag">Attach to SS</span>
+              </div>
+            </div>
+          </div>
+          <button class="prompt-toggle">▼</button>
+        </div>
+        <div class="prompt-body">
+          <div class="prompt-code"><div class="prompt-toolbar"><button class="toolbar-btn" onclick="copyPromptText(this,'pt-tokens')">Copy to Clipboard</button><button class="toolbar-btn" onclick="downloadPromptFile('design-tokens')">Download as .txt</button></div><span id="pt-tokens"><span class="hl">COASTAL WEALTH — PRECISION DESIGN SYSTEM v6</span>
+<span class="hl">Reference file for SS-generated designs</span>
+
+<span class="hl-d">When creating any visual output for Coastal Wealth, use these specifications exactly.</span>
+
+<span class="hl-b">═══ FONTS ═══</span>
+Include in &lt;head&gt;:
+  &lt;link rel="stylesheet" href="https://use.typekit.net/tpw8nnl.css"&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet"&gt;
+
+Display:     'marlide-display-variable', 'Playfair Display', Georgia, serif
+Body serif:  'Source Serif 4', Georgia, serif
+UI sans:     'DM Sans', -apple-system, sans-serif
+
+<span class="hl-b">═══ COLOR PALETTE ═══</span>
+Coastal Navy:
+  900: #252f4a  — Primary dark (backgrounds, text, nav)
+  800: #3c506f  — Dark slides, callout backgrounds
+  700: #5d7fa0  — Accent on light, italic headings
+  600: #6b95ba  — Primary accent (buttons, overlines, links)
+  400: #89adc8  — On-dark accent text
+  300: #a7c4d8  — Decorative elements
+  200: #c9dce8  — Light blue backgrounds
+  100: #e8f0f5  — Tags, badges
+  50:  #f4f8fb  — Hover states
+
+Sand:
+  100: #faf7f2  — Warm backgrounds
+  200: #f3ede4  — Button fills
+  300: #e5ddd0  — Hover states
+
+Gray:
+  200: #e8e8e8  — Borders, dividers
+  400: #a3a3a3  — Labels, captions
+  500: #737373  — Body text (sans)
+  600: #525252  — Body text (serif)
+
+<span class="hl-b">═══ TYPOGRAPHY SCALE ═══</span>
+Hero:        marlide-display, clamp(52px,6vw,84px), 400, line-height 0.94, tracking -0.02em
+Display:     marlide-display, 48px, 400, line-height 1.05, tracking -0.015em
+Heading:     DM Sans, 28px, 500, line-height 1.25
+Subheading:  DM Sans, 20px, 500, line-height 1.4
+Body serif:  Source Serif 4, 18px, 300, line-height 1.75
+Body sans:   DM Sans, 16px, 400, line-height 1.65
+Overline:    DM Sans, 11px, 500, 3px letter-spacing, uppercase, #6b95ba
+             Always preceded by 24px horizontal rule
+Caption:     DM Sans, 12px, 400, #a3a3a3
+
+<span class="hl-w">Italic accent rule:</span> Headline words wrapped in &lt;em&gt; use #5d7fa0 on light backgrounds, #89adc8 on dark backgrounds.
+
+<span class="hl-b">═══ SPACING ═══</span>
+4px / 8px / 12px / 16px / 24px / 32px / 48px / 64px / 96px / 128px
+
+<span class="hl-b">═══ SHADOWS ═══</span>
+sm: 0 1px 3px rgba(37,47,74,0.04)
+md: 0 4px 16px rgba(37,47,74,0.06)
+lg: 0 12px 40px rgba(37,47,74,0.08)
+
+<span class="hl-b">═══ MOTION ═══</span>
+Easing:    cubic-bezier(0.16, 1, 0.3, 1)
+Hover:     200ms
+Reveals:   400ms
+
+<span class="hl-b">═══ BUTTONS ═══</span>
+Primary:   bg #252f4a, white text, 14px DM Sans 500, padding 14px 32px
+Accent:    bg #6b95ba, white text (same sizing)
+Outline:   transparent bg, #252f4a text, 1.5px #d4d4d4 border
+Hover:     translateY(-1px) + shadow-md
+
+<span class="hl-b">═══ AESTHETIC ═══</span>
+Warm. Quiet. Confident refinement.
+Not flashy, not generic corporate. Think: a premium private wealth firm that doesn't need to shout.</span></div>
+          <div class="prompt-notes">
+            <strong>How to use:</strong> Download this file and attach it to your SS alongside any custom prompt you write. This gives the SS the complete design system reference without you needing to type out colors and fonts every time.
+            <div class="tip">This is the "universal adapter" — if none of the specific prompts above fit your needs, write your own prompt and just attach this file. Your SS will use these design tokens to produce on-brand output.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BEFORE / AFTER ═══ -->
+<div class="ds-section" id="examples">
+  <div class="ds-section-title reveal">Before &amp; After</div>
+  <div class="overline reveal">See the Difference</div>
+  <h2 class="section-heading reveal">Same content.<br>Completely different <em>experience</em>.</h2>
+  <p class="section-lead reveal">
+    Hover to see the transformation effect.
+  </p>
+
+  <div class="ba-showcase reveal">
+    <div class="ba-side">
+      <div class="ba-label ba-label-before">Before — Word Document</div>
+      <div class="ba-preview ba-preview-before">
+        <div class="mock-doc" style="transform:rotate(-2deg);box-shadow:4px 6px 20px rgba(0,0,0,0.08);">
+          <div class="md-t"></div>
+          <div class="md-l"></div><div class="md-l"></div><div class="md-l"></div>
+          <div class="md-l"></div><div class="md-l"></div><div class="md-l"></div>
+          <div class="md-l"></div><div class="md-l"></div>
+        </div>
+        <div class="mock-doc" style="position:absolute;transform:rotate(1deg) translate(20px,-8px);opacity:0.5;box-shadow:2px 4px 12px rgba(0,0,0,0.05);">
+          <div class="md-t" style="width:80%"></div>
+          <div class="md-l"></div><div class="md-l"></div><div class="md-l"></div>
+          <div class="md-l"></div><div class="md-l"></div><div class="md-l"></div>
+        </div>
+      </div>
+      <div class="ba-caption">40 pages of bullet points nobody reads</div>
+    </div>
+    <div class="ba-side">
+      <div class="ba-label ba-label-after">After — Designed Presentation</div>
+      <div class="ba-preview ba-preview-after">
+        <div class="mock-slide" style="box-shadow:0 12px 40px rgba(0,0,0,0.3);">
+          <div>
+            <div class="ms-bar"></div>
+            <div class="ms-sub">A MassMutual Firm</div>
+            <div class="ms-title" style="font-size:17px;">Advisor <em>Partnership</em><br>Overview</div>
+          </div>
+          <div style="font-family:var(--font-body-serif);font-size:8px;color:rgba(255,255,255,0.3);font-style:italic;line-height:1.5;max-width:180px;">Empowering independent advisors to build, grow, and thrive.</div>
+          <div class="ms-dots"><div class="ms-dot"></div><div class="ms-dot"></div><div class="ms-dot"></div><div class="ms-dot"></div></div>
+        </div>
+      </div>
+      <div class="ba-caption ba-caption-dark">On-brand deck, generated in 3 minutes</div>
+    </div>
+  </div>
+
+  <div class="ba-showcase reveal">
+    <div class="ba-side">
+      <div class="ba-label ba-label-before">Before — Dense Compliance PDF</div>
+      <div class="ba-preview ba-preview-before">
+        <div class="mock-doc" style="height:200px;transform:rotate(-1deg);box-shadow:4px 6px 20px rgba(0,0,0,0.08);">
+          <div class="md-t" style="width:90%"></div>
+          <div class="md-l" style="width:100%"></div><div class="md-l" style="width:100%"></div>
+          <div class="md-l" style="width:95%"></div><div class="md-l" style="width:100%"></div>
+          <div class="md-l" style="width:88%"></div><div class="md-l" style="width:100%"></div>
+          <div class="md-l" style="width:92%"></div><div class="md-l" style="width:100%"></div>
+        </div>
+      </div>
+      <div class="ba-caption">Nobody reads past page 3</div>
+    </div>
+    <div class="ba-side">
+      <div class="ba-label ba-label-after">After — Interactive JSX Experience</div>
+      <div class="ba-preview ba-preview-after">
+        <div class="mock-jsx" style="box-shadow:0 12px 40px rgba(0,0,0,0.3);">
+          <div class="mock-jsx-top"><span></span><span></span><span></span></div>
+          <div class="mock-jsx-tabs"><span>Overview</span><span>Leadership</span><span>Platform</span><span>VIP Day</span></div>
+          <div style="padding:8px 10px 0;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+              <div style="width:16px;height:1.5px;background:var(--coastal-400);"></div>
+              <span style="font-family:var(--font-ui);font-size:6px;color:var(--coastal-400);text-transform:uppercase;letter-spacing:1.5px;">About Us</span>
+            </div>
+            <div style="font-family:var(--font-display);font-size:11px;color:white;line-height:1.2;margin-bottom:6px;">Who <em style="color:var(--coastal-400);font-style:italic;">We</em> Are</div>
+          </div>
+          <div class="mock-jsx-body" style="padding-top:4px;">
+            <div class="mock-jsx-card" style="height:28px;"></div>
+            <div class="mock-jsx-card" style="height:28px;"></div>
+            <div class="mock-jsx-card" style="height:28px;grid-column:1/-1;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ba-caption ba-caption-dark">Navigable, searchable, actually used</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STATS ═══ -->
+<div class="stats-dark">
+  <div class="stat-d"><div class="stat-d-num">$85K+</div><div class="stat-d-label">Annual design cost savings</div></div>
+  <div class="stat-d"><div class="stat-d-num">40→1</div><div class="stat-d-label">Pages to screens</div></div>
+  <div class="stat-d"><div class="stat-d-num">3 min</div><div class="stat-d-label">Time to first output</div></div>
+  <div class="stat-d"><div class="stat-d-num">100%</div><div class="stat-d-label">Brand consistency</div></div>
+</div>
+
+<!-- ═══ PRO TIPS ═══ -->
+<div style="background: var(--sand-100); border-top: 1px solid var(--sand-200);" id="tips">
+  <div class="ds-section">
+    <div class="ds-section-title reveal">Pro Tips</div>
+    <div class="overline reveal">Get Better Results</div>
+    <h2 class="section-heading reveal">Small changes,<br>big <em>improvements</em>.</h2>
+    <p class="section-lead reveal">How you talk to your Smart System changes what you get back.</p>
+    <div class="tips-grid">
+      <div class="tip-card reveal"><h4>Be Specific, Not Vague</h4><p><strong>Weak:</strong> "Make a nice deck about our company."<br><br><strong>Strong:</strong> "Create a 10-slide recruiting deck highlighting our MassMutual affiliation, 350+ advisor network, and 97% retention rate. Audience: experienced advisors at wirehouses considering independence."</p></div>
+      <div class="tip-card reveal reveal-delay-1"><h4>Attach Source Material</h4><p>Your SS works best transforming existing content — not inventing from scratch. Attach the Word doc, PDF, or paste the bullet points you already have. Real content in, real output out.</p></div>
+      <div class="tip-card reveal reveal-delay-2"><h4>Iterate, Don't Restart</h4><p>If the output is 80% right, tell your SS what to fix: "Make the headline larger and change slide 3 to focus on technology instead of culture." Don't re-paste the entire prompt.</p></div>
+      <div class="tip-card reveal"><h4>Specify Exact Dimensions</h4><p>Always tell your SS the exact size: "16:9 landscape at 1280×720," "1080×1080 square for LinkedIn." This prevents awkward resizing and ensures pixel-perfect output.</p></div>
+      <div class="tip-card reveal reveal-delay-1"><h4>Use the Artifact Viewer</h4><p>When your SS generates HTML or JSX, the artifact panel shows a live preview. You can interact with it — click tabs, scroll, hover — before downloading or screenshotting.</p></div>
+      <div class="tip-card reveal reveal-delay-2"><h4>Download the Token File</h4><p>For any custom prompt not covered here, download the Design System Token File and attach it to your SS alongside your prompt. This gives the SS the full brand reference.</p></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ WORKFLOWS ═══ -->
+<div style="background: var(--sand-100); border-top: 1px solid var(--sand-200); border-bottom: 1px solid var(--sand-200);" id="workflows">
+  <div class="ds-section">
+    <div class="ds-section-title reveal">Workflows</div>
+    <div class="overline reveal">Step-by-Step Guides</div>
+    <h2 class="section-heading reveal">Advanced workflows for<br>polished <em>deliverables</em>.</h2>
+
+    <!-- PDF Workflow -->
+    <div class="reveal" style="background:white;border:1px solid var(--gray-200);padding:var(--space-7);margin-bottom:var(--space-6);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:var(--space-5);">
+        <div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--coastal-100);border:1px solid var(--coastal-200);font-size:18px;">📑</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-size:16px;font-weight:500;color:var(--coastal-900);">How to Create a PDF Presentation</div>
+          <div style="font-family:var(--font-ui);font-size:13px;color:var(--gray-400);">The highest-quality path from prompt to polished PDF</div>
+        </div>
+      </div>
+      <div class="workflow-steps">
+        <div style="padding:var(--space-5);border:1px solid var(--gray-200);margin:-0.5px;position:relative;">
+          <div style="font-family:var(--font-display);font-size:28px;color:var(--coastal-200);margin-bottom:var(--space-3);">01</div>
+          <div style="font-family:var(--font-ui);font-size:14px;font-weight:500;color:var(--coastal-900);margin-bottom:var(--space-2);">Prompt → HTML</div>
+          <div style="font-family:var(--font-ui);font-size:12px;color:var(--gray-500);line-height:1.6;">Paste your deck prompt into SS with your content. SS generates a complete HTML slide deck.</div>
+        </div>
+        <div style="padding:var(--space-5);border:1px solid var(--gray-200);margin:-0.5px;">
+          <div style="font-family:var(--font-display);font-size:28px;color:var(--coastal-200);margin-bottom:var(--space-3);">02</div>
+          <div style="font-family:var(--font-ui);font-size:14px;font-weight:500;color:var(--coastal-900);margin-bottom:var(--space-2);">Refine the Design</div>
+          <div style="font-family:var(--font-ui);font-size:12px;color:var(--gray-500);line-height:1.6;">Review the output. Ask SS to adjust content, fix spacing, or change slide order until it looks right.</div>
+        </div>
+        <div style="padding:var(--space-5);border:1px solid var(--gray-200);margin:-0.5px;">
+          <div style="font-family:var(--font-display);font-size:28px;color:var(--coastal-200);margin-bottom:var(--space-3);">03</div>
+          <div style="font-family:var(--font-ui);font-size:14px;font-weight:500;color:var(--coastal-900);margin-bottom:var(--space-2);">Slides → PNGs</div>
+          <div style="font-family:var(--font-ui);font-size:12px;color:var(--gray-500);line-height:1.6;">Tell SS: "Render each slide as a separate PNG image at 2x resolution." This creates crisp, pixel-perfect images.</div>
+        </div>
+        <div style="padding:var(--space-5);border:1px solid var(--gray-200);margin:-0.5px;">
+          <div style="font-family:var(--font-display);font-size:28px;color:var(--coastal-200);margin-bottom:var(--space-3);">04</div>
+          <div style="font-family:var(--font-ui);font-size:14px;font-weight:500;color:var(--coastal-900);margin-bottom:var(--space-2);">PNGs → PDF</div>
+          <div style="font-family:var(--font-ui);font-size:12px;color:var(--gray-500);line-height:1.6;">Tell SS: "Combine all slide PNGs into a single PDF document." Download the final polished presentation.</div>
+        </div>
+      </div>
+      <div style="margin-top:var(--space-4);padding:var(--space-4);background:var(--coastal-50);border:1px solid var(--coastal-100);font-family:var(--font-ui);font-size:13px;color:var(--gray-500);line-height:1.6;">
+        <strong style="color:var(--coastal-900);">Why this workflow?</strong> Going HTML → PNG → PDF produces significantly higher quality than direct PDF generation. The HTML render preserves all fonts, gradients, and spacing exactly as designed. The PNG step locks in the visual fidelity. The PDF combines everything into a shareable, printable file.
+      </div>
+    </div>
+
+    <!-- Image Workflow -->
+    <div class="reveal" style="background:white;border:1px solid var(--gray-200);padding:var(--space-7);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:var(--space-5);">
+        <div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--coastal-100);border:1px solid var(--coastal-200);font-size:18px;">🖼️</div>
+        <div>
+          <div style="font-family:var(--font-ui);font-size:16px;font-weight:500;color:var(--coastal-900);">Adding Images to Your Designs</div>
+          <div style="font-family:var(--font-ui);font-size:13px;color:var(--gray-400);">Headshots, logos, charts, and photos</div>
+        </div>
+      </div>
+      <div style="font-family:var(--font-body-serif);font-size:15px;color:var(--gray-500);line-height:1.7;max-width:800px;margin-bottom:var(--space-4);">
+        You can include images in any SS-generated design. The simplest approach: <strong style="color:var(--coastal-900);">attach the image file alongside your prompt</strong>. SS can see the image and will incorporate it into the design. For headshots, logos, or any visual asset — just drag it into the chat along with your prompt.
+      </div>
+      <div style="font-family:var(--font-ui);font-size:13px;color:var(--gray-500);line-height:1.6;">
+        <strong style="color:var(--coastal-900);">For embedding images directly in HTML output:</strong> Ask SS to convert the image to base64 and inline it as a data URI. This keeps the HTML file fully self-contained — no broken image links, no external dependencies. Just say: "Embed this image as base64 in the HTML."
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ IMAGE LIBRARY ═══ -->
+<div class="ds-section" id="images">
+  <div class="ds-section-title reveal">Image Library</div>
+  <div class="overline reveal">Brand Photography</div>
+  <h2 class="section-heading reveal">Approved images for<br>your <em>designs</em>.</h2>
+  <p class="section-lead reveal">
+    Download and attach these alongside any prompt. Your SS will incorporate them into decks, flyers, social graphics, and interactive experiences.
+  </p>
+
+  <div class="image-library-grid reveal">
+    <div class="img-card">
+      <div class="img-preview" style="background-image:url('images/coastal-waterfront.jpg');"></div>
+      <div class="img-card-body">
+        <div class="img-card-title">Fisher Island Waterfront</div>
+        <div class="img-card-meta">Landscape · Hero backgrounds, slides</div>
+        <a href="images/coastal-waterfront.jpg" download class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:12px;">Download ↓</a>
+      </div>
+    </div>
+    <div class="img-card">
+      <div class="img-preview" style="background-image:url('images/coastal-boardwalk.jpg');"></div>
+      <div class="img-card-body">
+        <div class="img-card-title">Coastal Boardwalk</div>
+        <div class="img-card-meta">Blue-tinted · Slide backgrounds, social</div>
+        <a href="images/coastal-boardwalk.jpg" download class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:12px;">Download ↓</a>
+      </div>
+    </div>
+    <div class="img-card">
+      <div class="img-preview" style="background-image:url('images/coastal-team.png');"></div>
+      <div class="img-card-body">
+        <div class="img-card-title">Team in Action</div>
+        <div class="img-card-meta">Conference room · About, leadership slides</div>
+        <a href="images/coastal-team.png" download class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:12px;">Download ↓</a>
+      </div>
+    </div>
+    <div class="img-card">
+      <div class="img-preview" style="background-image:url('images/coastal-water-texture.jpg');"></div>
+      <div class="img-card-body">
+        <div class="img-card-title">Water Texture</div>
+        <div class="img-card-meta">Pattern · Backgrounds, overlays, dividers</div>
+        <a href="images/coastal-water-texture.jpg" download class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:12px;">Download ↓</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal" style="margin-top:var(--space-5);padding:var(--space-4) var(--space-5);background:var(--coastal-50);border:1px solid var(--coastal-100);font-family:var(--font-ui);font-size:13px;color:var(--gray-500);line-height:1.6;">
+    <strong style="color:var(--coastal-900);">How to use:</strong> Download the image you want, then attach it alongside your prompt when pasting into your SS. Say something like: "Use the attached image as the hero background for slide 1." The SS will incorporate it into the design. For self-contained HTML files, ask SS to "embed this image as base64."
+  </div>
+</div>
+
+<!-- ═══ DESIGN SYSTEM FILES ═══ -->
+<div style="background: var(--sand-100); border-top: 1px solid var(--sand-200); border-bottom: 1px solid var(--sand-200);" id="files">
+  <div class="ds-section">
+    <div class="ds-section-title reveal">Design System Files</div>
+    <div class="overline reveal">Source Files</div>
+    <h2 class="section-heading reveal">The complete<br><em>design system</em>.</h2>
+    <p class="section-lead reveal">
+      Download the raw design system files for reference or to attach to custom prompts.
+    </p>
+    <div class="files-grid reveal">
+      <a href="coastal-precision-design-system.md" download class="file-card">
+        <div class="file-icon">📋</div>
+        <div>
+          <div class="file-name">coastal-precision-design-system.md</div>
+          <div class="file-desc">Full design system documentation — colors, typography, components, patterns</div>
+        </div>
+        <div class="file-dl">↓</div>
+      </a>
+      <a href="coastal-precision-tokens.css" download class="file-card">
+        <div class="file-icon">🎨</div>
+        <div>
+          <div class="file-name">coastal-precision-tokens.css</div>
+          <div class="file-desc">CSS custom properties for all design tokens — ready to paste into stylesheets</div>
+        </div>
+        <div class="file-dl">↓</div>
+      </a>
+      <a href="coastal-precision-tokens.json" download class="file-card">
+        <div class="file-icon">⚙️</div>
+        <div>
+          <div class="file-name">coastal-precision-tokens.json</div>
+          <div class="file-desc">JSON design tokens for tooling, code generation, and programmatic access</div>
+        </div>
+        <div class="file-dl">↓</div>
+      </a>
+      <a href="design-system-reference.html" download class="file-card">
+        <div class="file-icon">🖥️</div>
+        <div>
+          <div class="file-name">design-system-reference.html</div>
+          <div class="file-desc">Live HTML reference with all components rendered — open in browser to preview</div>
+        </div>
+        <div class="file-dl">↓</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CTA ═══ -->
+<div class="dark-cta">
+  <div class="overline reveal" style="color:var(--coastal-400);justify-content:center;"><span style="width:24px;height:1.5px;background:var(--coastal-400);display:inline-block"></span>Ready to Start</div>
+  <h2 class="reveal">Pick a prompt.<br>Create something <em>remarkable</em>.</h2>
+  <p class="reveal">The fastest path from "I need this" to "it's done."</p>
+  <div class="reveal" style="display:flex;gap:var(--space-3);justify-content:center;">
+    <a href="#templates" class="btn btn-accent">Browse Templates</a>
+    <a href="#prompts" class="btn btn-white-outline">View Prompts</a>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="mega-footer">
+  <div class="footer-grid">
+    <div><div class="footer-col-head">Toolkit</div><ul class="footer-links"><li><a href="#templates">Template Library</a></li><li><a href="#prompts">Prompt Library</a></li><li><a href="#examples">Before &amp; After</a></li><li><a href="#tips">Pro Tips</a></li><li><a href="#workflows">Workflows</a></li></ul></div>
+    <div><div class="footer-col-head">Resources</div><ul class="footer-links"><li><a href="https://claude.ai" target="_blank">Open SS</a></li><li><a href="#" onclick="downloadPromptFile('design-tokens');return false;">Design System Tokens</a></li><li><a href="#prompt-tokens" onclick="scrollToPrompt('prompt-tokens');return false;">Brand Guidelines</a></li></ul></div>
+    <div><div class="footer-col-head">Support</div><ul class="footer-links"><li><a href="mailto:">Contact Marketing Team</a></li><li><a href="mailto:">Request a Template</a></li></ul></div>
+  </div>
+  <div class="footer-mega-logo">Coastal Wealth</div>
+  <div class="footer-badges">
+    <div class="footer-badge">SS Toolkit v1.0</div>
+    <div class="footer-badge">Dillon Agency</div>
+    <div class="footer-badge">Internal Use Only</div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Coastal Wealth. Smart System (SS) Design Toolkit built by Dillon Agency. Internal use only.</p></div>
+</footer>
+
+<script>
+// ═══ PROMPT CONTENT STORE ═══
+// All prompts stored as plain text for downloads
+const PROMPTS = {};
+document.querySelectorAll('.prompt-code span[id^="pt-"]').forEach(el => {
+  PROMPTS[el.id.replace('pt-', '')] = el.innerText;
+});
+
+// ═══ SCROLL REVEAL ═══
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ═══ NAV SCROLL EFFECT ═══
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// ═══ SMOOTH SCROLL ═══
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// ═══ TOAST ═══
+let toastTimeout;
+function showToast(icon, title, subtitle) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-text').innerHTML = title + (subtitle ? '<small>' + subtitle + '</small>' : '');
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ═══ PROMPT TOGGLE ═══
+function togglePrompt(header) {
+  header.closest('.prompt-item').classList.toggle('open');
+}
+
+function scrollToPrompt(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    if (!el.classList.contains('open')) el.classList.add('open');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// ═══ COPY TO CLIPBOARD ═══
+function copyPromptText(btn, textId) {
+  const el = document.getElementById(textId);
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    showToast('📋', 'Prompt copied to clipboard', 'Paste into SS to use');
+    setTimeout(() => { btn.textContent = 'Copy to Clipboard'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+
+// ═══ DOWNLOAD AS .TXT FILE ═══
+const PROMPT_MAP = {
+  'landscape-deck': { id: 'pt-deck', name: 'Coastal-Wealth_Landscape-Deck-Prompt' },
+  'portrait-deck':  { id: 'pt-deck', name: 'Coastal-Wealth_Portrait-Deck-Prompt' },
+  'flyer':          { id: 'pt-flyer', name: 'Coastal-Wealth_Flyer-Prompt' },
+  'jsx-converter':  { id: 'pt-jsx', name: 'Coastal-Wealth_JSX-Converter-Prompt' },
+  'social-graphics':{ id: 'pt-social', name: 'Coastal-Wealth_Social-Graphics-Prompt' },
+  'brand-voice':    { id: 'pt-content', name: 'Coastal-Wealth_Brand-Voice-Prompt' },
+  'research-analysis': { id: 'pt-research', name: 'Coastal-Wealth_Research-Analysis-Prompt' },
+  'design-tokens':  { id: 'pt-tokens', name: 'Coastal-Wealth_Design-System-Tokens' }
+};
+
+function downloadPromptFile(key) {
+  const info = PROMPT_MAP[key];
+  if (!info) return;
+  const el = document.getElementById(info.id);
+  if (!el) return;
+  const text = el.innerText;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = info.name + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast('↓', info.name + '.txt downloaded', 'Drag into your SS or copy-paste the contents');
+
+  // Visual feedback on toolbar buttons
+  const caller = event && event.target;
+  if (caller && caller.classList.contains('toolbar-btn')) {
+    caller.textContent = 'Downloaded ✓';
+    caller.classList.add('downloaded');
+    setTimeout(() => { caller.textContent = 'Download as .txt'; caller.classList.remove('downloaded'); }, 2500);
+  }
+}
+</script>
+</body>
+</html>
